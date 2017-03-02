@@ -8,7 +8,7 @@ require('../../../config.txt');
 exports.getGrimoire = function(options, onResult){
 	console.log('getGrimoire called');
 
-	let req = http.request(op, function(res){
+	let req = http.request(options, function(res){
 		let out = [];
 		console.log('status: ' + res.statusCode);
 		console.log('headers: ' + JSON.stringify(res.headers));
