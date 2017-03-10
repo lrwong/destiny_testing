@@ -5,6 +5,7 @@ let request =  require('request');
 let https = require('https');
 let fs = require('fs');
 let zip = require('adm-zip');
+let sql = require('sqlite3').verbose();
 require('../../../config.txt');
 
 let base_url = 'https://www.bungie.net/';
@@ -12,7 +13,6 @@ let base_url = 'https://www.bungie.net/';
 
 // module.exports.dlManifest = function(returnMan){
 function getLink(returnLink){
-
 	let man = '/platform/Destiny/Manifest/';
 	let test;
 	let options = {
@@ -70,21 +70,6 @@ getLink(function(res){
 					return;
 				}
 			});
-
-
-			// fs.write('../../images/test.txt', body, function(err, data){
-			// 	if(err){
-			// 		console.log(err);
-			// 	} else {
-			// 		let z = new zip('../../images/test.txt');
-			// 		z.getEntries().forEach(function(entry){
-			// 			let entryName = entry.entryName;
-			// 			console.log(entryName);
-			// 			let unzipped = z.readFile(entry);
-			// 			console.log(zip.readAsText(entry));
-			// 		});
-			// 	}
-			// })
 		}
 	});
 });
