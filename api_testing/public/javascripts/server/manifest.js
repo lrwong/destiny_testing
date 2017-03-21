@@ -5,11 +5,14 @@ let fs = require('fs');
 let sqlite = require('sqlite3').verbose();
 let SZIP = require('node-stream-zip'); //use this
 require('../../../config.txt');
-let defs = require('./t.json');
+let defs = require('./table.json');
 
-
+//the urls are hard coded for simplicity's sake
 let man = 'https://www.bungie.net/';
 let en = '/common/destiny_content/sqlite/en/world_sql_content_64ba059d78e743476271c13d9ff5feff.content'
+
+//this is the entry name for the english manifest
+//contained in the zip file that we need to extract
 let en_path = 'world_sql_content_64ba059d78e743476271c13d9ff5feff.content';
 
 
@@ -35,8 +38,6 @@ function getManifest(){
 	request(options)
 	.on('response', function(res, body){
 		console.log(res.statusCode);
-		// console.log(res.headers);
-		// len = res.headers.toString().length;
 	}).pipe(outStream)
 	.on('finish', function(){
 		let zip = new SZIP({
@@ -53,17 +54,16 @@ function getManifest(){
 
 }
 
-function queryManifest(table){
+//queries manifes.content, can be modified to accept parameters
+//mostly just to demo that this can use the .content file 
+//as a sqlite db for queries
+function queryManifest(){
 	let db = new sqlite.Database('manifest.content');
 
-	let params = {
-		$id: 0,
-		$table: defs.table
-	};
 
 	db.serialize(function(){
 		
-		let query = "SELECT * FROM " + defs[table];
+		let query = "SELECT name FROM sqlite_master WHERE type='table'";
 
 		db.each(query, function(err, row){
 			if(err) throw err;
@@ -73,4 +73,3 @@ function queryManifest(table){
 	});
 }
 
-queryManifest('enemyDefs');
